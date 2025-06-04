@@ -64,7 +64,7 @@ if ($old_role === 'teacher' && $new_role !== 'teacher') :
                 "task_id" => $task["id"]
                 ]);
             }
-
+            
             // delete all submissions with task ids
             $sql = "DELETE FROM submission WHERE task_id = :task_id";
             $query = $database->prepare( $sql );
@@ -121,7 +121,14 @@ if ($old_role === 'student' && $new_role !== 'student') {
         ]);
 }
 
-// update everything
+    // delete user comments (since anyone can comment)
+    $sql = "DELETE FROM comment WHERE user_id = :user_id";
+    $query = $database->prepare( $sql );
+    $query->execute([
+        "user_id" => $user_id
+    ]);
+
+    // update everything
     $sql = "UPDATE user set name = :name, email = :email, role = :role WHERE id = :id";
     $query = $database->prepare($sql);
     $query->execute([
@@ -130,6 +137,7 @@ if ($old_role === 'student' && $new_role !== 'student') {
         "role" => $new_role,
         "id" => $user_id
     ]);
+    
 // Redirect or show success message
 header("Location: /admin/users?success=1");
 exit;

@@ -129,6 +129,10 @@
     case '/comment/delete':
       require "includes/comment/do_delete.php";
       break;
+    // comment edit
+    case '/comment/edit':
+      require "includes/comment/do_edit.php";
+      break;
 
     // submission approve
     case '/submission/approve':

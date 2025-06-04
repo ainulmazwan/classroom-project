@@ -106,8 +106,14 @@
             "id" => $class_id
             ]);
         }
-    
     endif;
+
+    // delete user comments (since anyone can comment)
+        $sql = "DELETE FROM comment WHERE user_id = :user_id";
+        $query = $database->prepare( $sql );
+        $query->execute([
+            "user_id" => $user_id
+        ]);
 
         // (FINALLY) delete user
         $sql = "DELETE FROM user WHERE id = :user_id";

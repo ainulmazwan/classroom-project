@@ -33,6 +33,16 @@
         ]);
     }
 
+    // delete student comments
+    $sql = "DELETE FROM comment WHERE task_id = :task_id AND user_id = :user_id";
+    $query = $database->prepare( $sql );
+    foreach ($tasks as $task) {
+        $query->execute([
+        "task_id" => $task["id"],
+        "user_id" => $student_id
+        ]);
+    }
+    
     // delete student submission
     $sql = "DELETE FROM submission WHERE student_id = :student_id AND task_id = :task_id";
     $query = $database->prepare( $sql );

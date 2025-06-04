@@ -34,6 +34,15 @@
         ]);
     }
 
+    // delete all comments with task ids
+    $sql = "DELETE FROM comment WHERE task_id = :task_id";
+    $query = $database->prepare( $sql );
+    foreach ($tasks as $task) {
+        $query->execute([
+        "task_id" => $task["id"]
+        ]);
+    }
+
     // delete all submissions with task ids
     $sql = "DELETE FROM submission WHERE task_id = :task_id";
     $query = $database->prepare( $sql );
