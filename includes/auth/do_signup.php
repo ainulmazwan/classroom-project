@@ -23,12 +23,8 @@
             header("location: /signup");
             exit;
         }else{
-            // 6. create a user account
-            // 6.1 SQL command
             $sql = "INSERT INTO user (`name`,`email`,`password`,`role`) VALUES (:name, :email, :password, :role)";
-            // 6.2 prepare
             $query = $database->prepare( $sql );
-            // 6.3 execute
             $query->execute([
                 "name" => $name,
                 "email" => $email,
@@ -36,11 +32,10 @@
                 "role" => $role
             ]);
 
-            // 7. set success message
+            
+
+            // redirect to login.php
             $_SESSION["success"] = "Account created successfully. Please login with your email and password";
-
-
-            // 8. redirect to login.php
             header("Location: /login");
             exit;
         }

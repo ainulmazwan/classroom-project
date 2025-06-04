@@ -4,7 +4,7 @@
 
   $database = connectToDB();
  
-    // load classroom data by id
+    // load classroom data by id and search value
     $sql = "SELECT class.*, user.name
             FROM class
             JOIN user

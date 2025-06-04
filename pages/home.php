@@ -1,7 +1,9 @@
 <?php
   $database = connectToDB();
 
+  // get class list
   if (isUserLoggedIn() && isTeacher()){
+    // teacher : get classes by teacher
     $sql = "SELECT * FROM class WHERE teacher_id = :teacher_id";
     $query = $database->prepare($sql);
     $query->execute([
@@ -9,6 +11,7 @@
     ]);
     $classes = $query->fetchAll();
   }elseif (isStudent()){
+    // student : get classes joined by student (using student_in_class)
     $sql = "SELECT class.*, student_in_class.student_id
             FROM class
             JOIN student_in_class

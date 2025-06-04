@@ -64,10 +64,12 @@
 <?php require "parts/header.php"; ?>
 <div class="container mt-4">
     <?php if(!isAdmin()) : ?>
+    <!-- button to home for !admin -->
     <a href="/" class="btn btn-outline-secondary mb-3">
         <i class="bi bi-arrow-left"></i> Back to Home
     </a>
     <?php else: ?>
+    <!-- button to class list for admin -->
     <a href="/manage_classrooms" class="btn btn-outline-secondary mb-3">
         <i class="bi bi-arrow-left"></i> Back to Classrooms
     </a>
@@ -144,7 +146,7 @@
     <?php endif; ?>
 
     <div class="row g-4">
-        <!-- left side - requests and student list -->
+        <!-- left side : requests and student list -->
         <div class="col-lg-4">
             <?php if (!isStudent()) : ?>
                 <!-- see join requests button -->
@@ -237,7 +239,7 @@
                 </div>
             </div>
         </div>
-        <!-- right side - tasks -->
+        <!-- right side : tasks -->
         <div class="col-lg-8">
             <?php if (!isStudent()): ?>
                 <!-- add task button -->
@@ -281,7 +283,7 @@
                                 <div>
                                     <h5 class="card-title mb-1"><?= $task["title"] ?></h5>
                                     <p class="card-text"><?= $task["description"] ?></p>
-                                    <p class="card-text"><small class="text-muted">Posted on <?= date('F j, Y, g:i a', strtotime($task["created_at"])) ?></small></p>
+                                    <p class="card-text"><small class="text-muted">Posted on <?= $task["created_at"] ?></small></p>
                                 </div>
                                 <div class="d-flex">
                                     <a href="/classroom_task?task_id=<?= $task["id"] ?>&class_id=<?= $class_id ?>" class="btn btn-outline-primary">

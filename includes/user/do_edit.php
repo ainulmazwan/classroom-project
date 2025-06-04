@@ -2,7 +2,6 @@
 
     $database = connectToDB();
 
-    // Fetch current user info
     $user_id = $_POST['user_id'];
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -17,13 +16,9 @@
     $user = $query->fetch();
     $old_role = $user['role'];
 
-    var_dump($new_role);
-    var_dump($old_role);
-
-    
-
 // if teacher role change
 if ($old_role === 'teacher' && $new_role !== 'teacher') :
+    // get all classes by teacher
     $sql = "SELECT * FROM class WHERE teacher_id = :teacher_id";
             $query = $database->prepare($sql);
             $query->execute([
@@ -31,6 +26,7 @@ if ($old_role === 'teacher' && $new_role !== 'teacher') :
             ]);
         $classes = $query->fetchAll();
 
+        // delete from all tables related to class
         foreach ($classes as $class) :
             $class_id = $class["id"];
 
@@ -88,6 +84,14 @@ if ($old_role === 'teacher' && $new_role !== 'teacher') :
             "id" => $class_id
             ]);
         endforeach;
+
+        // delete user comments
+        $sql = "DELETE FROM comment WHERE user_id = :user_id";
+        $query = $database->prepare( $sql );
+        $query->execute([
+            "user_id" => $user_id
+        ]);
+
     endif;
 
 // if student role change
@@ -119,16 +123,25 @@ if ($old_role === 'student' && $new_role !== 'student') {
         $query->execute([
         "student_id" => $user_id
         ]);
+
+        // delete user comments
+        $sql = "DELETE FROM comment WHERE user_id = :user_id";
+        $query = $database->prepare( $sql );
+        $query->execute([
+            "user_id" => $user_id
+        ]);
 }
 
-    // delete user comments (since anyone can comment)
-    $sql = "DELETE FROM comment WHERE user_id = :user_id";
-    $query = $database->prepare( $sql );
-    $query->execute([
-        "user_id" => $user_id
-    ]);
-
-    // update everything
+if ($old_role === 'admin' && $new_role !== 'admin') {
+    // delete user comments
+        $sql = "DELETE FROM comment WHERE user_id = :user_id";
+        $query = $database->prepare( $sql );
+        $query->execute([
+            "user_id" => $user_id
+        ]);
+}
+// for all roles (student/teacher/admin)
+//  // update everything
     $sql = "UPDATE user set name = :name, email = :email, role = :role WHERE id = :id";
     $query = $database->prepare($sql);
     $query->execute([
@@ -137,8 +150,8 @@ if ($old_role === 'student' && $new_role !== 'student') {
         "role" => $new_role,
         "id" => $user_id
     ]);
-    
-// Redirect or show success message
-header("Location: /admin/users?success=1");
+
+// redirect to manage users
+header("Location: /manage_users");
 exit;
 ?>

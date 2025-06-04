@@ -2,6 +2,7 @@
     <div class="container my-5 mx-auto" style="max-width: 500px;">
       <h1 class="h1 mb-4 text-center">Login</h1>
 
+      <!-- form area -->
       <div class="card p-4">
         <!-- display success -->
         <?php require "parts/message_success.php" ?>

@@ -12,12 +12,13 @@
         "class_id" => $class_id
     ]);
 
+    // get class tasks
     // select all task ids where class = deleted class
     $sql = "SELECT * FROM task WHERE class_id = :class_id";
-            $query = $database->prepare($sql);
-            $query->execute([
-                "class_id" => $class_id
-            ]);
+    $query = $database->prepare($sql);
+    $query->execute([
+        "class_id" => $class_id
+    ]);
     $tasks = $query->fetchAll();
 
     // delete all student_tasks with task ids and student id
@@ -50,7 +51,7 @@
         ]);
     }
 
-    // delete student_in_class
+    // FINALLY delete student_in_class
     $sql = "DELETE FROM student_in_class WHERE student_id = :student_id AND class_id = :class_id";
     $query = $database->prepare( $sql );
     $query->execute([
@@ -58,6 +59,7 @@
         "class_id" => $class_id
     ]);
 
+    // redirect to home
     header("location: /");
     exit;
 ?>

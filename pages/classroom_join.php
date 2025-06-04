@@ -2,6 +2,7 @@
     <div class="container my-5 mx-auto" style="max-width: 500px;">
       <h1 class="h1 mb-4 text-center">Join a Classroom</h1>
 
+      <!-- form area -->
       <div class="card p-4">
         <form method="POST" action="/join_request/create">
           <div class="mb-2">
@@ -23,7 +24,7 @@
         </form>
       </div>
 
-      <!-- links -->
+      <!-- go back link -->
       <div
         class="d-flex justify-content-between align-items-center gap-3 mx-auto pt-3"
       >

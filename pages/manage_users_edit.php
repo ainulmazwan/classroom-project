@@ -6,22 +6,14 @@
     $database = connectToDB();
     
     $id = $_GET["id"];
-    // load user data by id
-    // sql
+    
+    // get user info by id
     $sql = "SELECT * FROM user where id = :id";
-    // prepare
     $query = $database->prepare($sql);
-    // execute
     $query -> execute([
       "id" => $id
     ]);
-    // fetch
     $user = $query->fetch();
-
-    /*
-      name -> $user["name"]
-
-    */
 
 ?>
 
@@ -30,6 +22,7 @@
       <div class="d-flex justify-content-between align-items-center mb-2">
         <h1 class="h1">Edit User </h1>
       </div>
+      <!-- form area -->
       <div class="card mb-2 p-4">
         <form method="POST" action="/user/do_edit">
           <div class="mb-3">

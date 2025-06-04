@@ -2,11 +2,8 @@
     <div class="container my-5 mx-auto" style="max-width: 500px;">
       <h1 class="h1 mb-4 text-center">Create a Classroom</h1>
 
+      <!-- form area -->
       <div class="card p-4">
-        <!-- display success -->
-        <?php require "parts/message_success.php" ?>
-        <!--display error -->
-        <?php require "parts/message_error.php" ?>
         <form method="POST" action="/classroom/create">
           <div class="mb-2">
             <h4 class="text-center mb-4">What will you name your classroom?</label>
@@ -24,7 +21,7 @@
         </form>
       </div>
 
-      <!-- links -->
+      <!-- go back link -->
       <div
         class="d-flex justify-content-between align-items-center gap-3 mx-auto pt-3"
       >

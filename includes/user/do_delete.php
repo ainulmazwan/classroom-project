@@ -3,7 +3,8 @@
 
     $user_id = $_POST["user_id"];
 
-    // check if deleted user is teacher or student or admin
+    // check if deleted user is teacher/student/admin
+    // get user data
     $sql = "SELECT * FROM user WHERE id = :id";
             $query = $database->prepare($sql);
             $query->execute([
@@ -11,7 +12,7 @@
             ]);
     $user = $query->fetch();
 
-    // deleting everything other than user first
+    // deleting everything else before user
     if ($user["role"] === 'student') :
         // delete all join requests
         $sql = "DELETE FROM join_request WHERE student_id = :student_id";
@@ -42,6 +43,7 @@
         ]);
 
     elseif ($user["role"] === 'teacher'):
+        // get all classes by the teacher
         $sql = "SELECT * FROM class WHERE teacher_id = :teacher_id";
             $query = $database->prepare($sql);
             $query->execute([
@@ -49,6 +51,7 @@
             ]);
         $classes = $query->fetchAll();
 
+        // delete every value related to classes
         foreach ($classes as $class) {
             $class_id = $class["id"];
 
@@ -108,6 +111,7 @@
         }
     endif;
 
+    // for all roles (student/teacher/admin)
     // delete user comments (since anyone can comment)
         $sql = "DELETE FROM comment WHERE user_id = :user_id";
         $query = $database->prepare( $sql );
@@ -123,6 +127,7 @@
         ]); 
   
 
+    // redirect to manage users
     header("location: /manage_users");
     exit;
 

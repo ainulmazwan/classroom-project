@@ -23,7 +23,7 @@
                 'student_id' => $student_id
             ]);
 
-    // redirect
+    // redirect to classroom task
     header("location: /classroom_task?task_id=" . $task_id. "&class_id=" . $class_id);
     exit;
         

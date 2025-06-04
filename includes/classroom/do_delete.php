@@ -3,20 +3,21 @@
 
     $class_id = $_POST["class_id"];
 
-    // delete all join requests approved or pending
+    // delete ALL join requests to class
     $sql = "DELETE FROM join_request WHERE class_id = :class_id";
     $query = $database->prepare( $sql );
     $query->execute([
         "class_id" => $class_id
     ]);
 
-    // delete all related student_in_class values
+    // delete ALL related student_in_class values
     $sql = "DELETE FROM student_in_class WHERE class_id = :class_id";
     $query = $database->prepare( $sql );
     $query->execute([
         "class_id" => $class_id
     ]);
 
+    // get class tasks
     // select all task ids where class = deleted class
     $sql = "SELECT * FROM task WHERE class_id = :class_id";
             $query = $database->prepare($sql);
@@ -66,9 +67,7 @@
     "id" => $class_id
     ]);
 
-
-    
-
+    // redirect to home
     header("location: /");
     exit;
 ?>

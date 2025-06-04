@@ -33,12 +33,13 @@
       <div class="text-center my-2">
         <h1 class="h1"><i class="bi bi-people"></i> Manage Users</h1>
       </div>
-      <!-- search -->
+      <!-- search form -->
       <form method="GET" action="/manage_users" class="mb-2 d-flex align-items-center gap-2">
         <input type="text" name="search" class="form-control" placeholder="Type a keyword to search..." value="<?= $search_keyword?>">
         <button class="btn btn-primary"><i class="bi bi-search"></i></button>
         <a href="/manage_users" class="btn btn-dark">Reset</a>
       </form>
+      <!-- table start -->
       <div class="card mb-2 p-4">
       <?php require "parts/message_success.php" ?>
         <table class="table">
@@ -51,7 +52,6 @@
               <th scope="col" class="text-end">Actions</th>
             </tr>
           </thead>
-          <!-- foreach to display data -->
           <tbody>
             <?php foreach ($users as $index => $user) { ?>
             <tr>
@@ -76,11 +76,10 @@
                     class="btn btn-success btn-sm me-2"
                     ><i class="bi bi-pencil"></i
                   ></a>                  
-                  <!-- Button to trigger delete confirmation modal -->
+                  <!-- delete user button -->
                   <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#userDeleteModal-<?php echo $user["id"];   ?>">
                      <i class="bi bi-trash"></i>
                   </button>
-                  <!-- delete form -->
                   <div class="modal fade" id="userDeleteModal-<?php echo $user["id"];   ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
@@ -114,6 +113,7 @@
           </tbody>
         </table>
       </div>
+      <!-- back link -->
       <div class="text-center">
         <a href="/dashboard" class="btn btn-link btn-sm"
           ><i class="bi bi-arrow-left"></i> Back to Dashboard</a

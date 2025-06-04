@@ -24,7 +24,7 @@
 
 
     if (isStudent()) :
-        // load submission
+        // load student submission
         $sql = "SELECT * FROM submission 
                 WHERE `task_id` = :task_id 
                 AND `student_id` = :student_id";
@@ -48,7 +48,7 @@
         ]);
         $submissions = $query->fetchAll();
 
-        // load ALL student ids who submit task
+        // load ALL student info
         $sql = "SELECT * FROM user WHERE id = :id";
         $query = $database->prepare($sql);
         foreach ($submissions as $submission) {
@@ -82,19 +82,19 @@
         <i class="bi bi-arrow-left"></i> Back to Classroom
     </a>
     <div class="row">
-        <!-- right side : task info and comments -->
+        <!-- left side : task info and comments -->
         <div class="col-lg-6 col-md-6 col-sm-12 h-100">
             <!-- task card -->
             <div class="card shadow-sm mb-4">
                 <div class="d-flex justify-content-between align-items-start card-body">
                     <div>
-                        <h3 class="card-title"><?= htmlspecialchars($task["title"]) ?></h3>
-                        <p class="card-text"><?= htmlspecialchars($task["description"]) ?></p>
-                        <p class="card-text"><small class="text-muted">Posted: <?= htmlspecialchars($task["created_at"]) ?></small></p>
+                        <h3 class="card-title"><?= $task["title"] ?></h3>
+                        <p class="card-text"><?= $task["description"] ?></p>
+                        <p class="card-text"><small class="text-muted">Posted: <?= $task["created_at"] ?></small></p>
                     </div>
                     <?php if (!isStudent()) : ?>
                     <div class="d-flex">
-                        <!-- edit task -->
+                        <!-- edit task button -->
                         <button type="button" class="btn btn-outline-primary btn-sm ms-3" data-bs-toggle="modal" data-bs-target="#editTaskModal-<?= $task["id"]; ?>">
                             <i class="bi bi-pencil"></i>
                         </button>
@@ -126,7 +126,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- delete task -->
+                        <!-- delete task button -->
                         <button type="button" class="btn btn-outline-danger btn-sm ms-3" data-bs-toggle="modal" data-bs-target="#deleteTaskModal-<?= $task["id"]; ?>">
                             <i class="bi bi-trash"></i>
                         </button>
@@ -138,7 +138,7 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Are you sure you want to delete the task "<strong><?= htmlspecialchars($task["title"]) ?></strong>"?</p>
+                                        <p>Are you sure you want to delete the task "<strong><?= $task["title"] ?></strong>"?</p>
                                         <p class="text-danger mb-0">This action cannot be undone.</p>
                                     </div>
                                     <div class="modal-footer">
@@ -156,6 +156,7 @@
                     <?php endif; ?>
                 </div>
             </div>
+
             <!-- comments section -->
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
@@ -165,13 +166,13 @@
                             <?php foreach ($comments as $comment): ?>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <div>
-                                        <strong><?= htmlspecialchars($comment['name']) ?>:</strong>
-                                        <div><?= nl2br(htmlspecialchars($comment['content'])) ?></div>
-                                        <span class="text-muted small"><?= htmlspecialchars($comment['timestamp']) ?></span>
+                                        <strong><?= $comment['name'] ?>:</strong>
+                                        <div><?= $comment['content'] ?></div>
+                                        <span class="text-muted small"><?= $comment['timestamp'] ?></span>
                                     </div>
                                     <?php if ($comment["user_id"] === $user_id || !isStudent()) : ?>
-                                    <div>
-                                        <!-- edit comment -->
+                                    <div class="d-flex align-items-start">
+                                        <!-- edit comment button -->
                                         <button type="button" class="btn btn-outline-primary btn-sm ms-3" data-bs-toggle="modal" data-bs-target="#editCommentModal-<?= $comment["id"]; ?>">
                                             <i class="bi bi-pencil"></i>
                                         </button>
@@ -200,7 +201,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- delete comment -->
+                                        <!-- delete comment button -->
                                         <form method="POST" action="/comment/delete" class="d-inline ms-1">
                                             <input type="hidden" name="comment_id" value="<?= $comment["id"] ?>">
                                             <input type="hidden" name="task_id" value="<?= $task["id"] ?>">
@@ -229,7 +230,7 @@
                 </div>
             </div>
         </div>
-        <!-- right side : submission section -->
+        <!-- right side : submission/s section -->
         <div class="col-lg-6 col-md-6 col-sm-12 h-100">
             <div class="card p-3 h-100">
                 <?php if (!isStudent()): ?>
@@ -239,9 +240,9 @@
                             <?php foreach ($submissions as $submission): ?>
                                 <li class="list-group-item d-flex justify-content-between">
                                     <div>
-                                        <strong><?= htmlspecialchars($submission["name"]) ?>:</strong>
-                                        <div class="mt-2"><?= nl2br(htmlspecialchars($submission["content"])) ?></div>
-                                        <span class="text-muted"><small><?= htmlspecialchars($submission["submitted_at"]) ?></small></span>
+                                        <strong><?= $submission["name"] ?>:</strong>
+                                        <div class="mt-2"><?= $submission["content"] ?></div>
+                                        <span class="text-muted"><small><?= $submission["submitted_at"] ?></small></span>
                                     </div>
                                     <div>
                                         <?php if ($submission["status"] === "pending"): ?>
@@ -282,6 +283,7 @@
                         <p class="text-muted">No submissions yet.</p>
                     <?php endif; ?>
                 <?php else: ?>
+                <!-- if is student -->
                     <h5>Your Submission</h5>
                     <?php if (!empty($student_submission)): ?>
                         <div class="alert alert-success">
@@ -294,7 +296,7 @@
                             <input type="hidden" name="class_id" value="<?= $class_id ?>">
                             <div class="mb-3">
                                 <label class="form-label">Edit your submission:</label>
-                                <textarea class="form-control" name="content" rows="3"><?= htmlspecialchars($student_submission["content"]) ?></textarea>
+                                <textarea class="form-control" name="content" rows="3" required><?= $student_submission["content"] ?></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Update Submission</button>
                         </form>

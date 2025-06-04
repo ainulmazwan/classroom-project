@@ -8,7 +8,7 @@
 
     $status = "pending";
 
-    // update submission status to approved
+    // update submission status to pending
         $sql = "UPDATE submission set status = :status WHERE id = :id";
         $query = $database->prepare($sql);
         $query->execute([
@@ -16,7 +16,7 @@
             "id" => $submission_id
         ]);
 
-    // redirect
+    // redirect to classroom task
     header("Location: /classroom_task?task_id=" . $task_id . "&class_id=" . $class_id);
     exit;
 ?>

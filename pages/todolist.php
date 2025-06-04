@@ -4,13 +4,13 @@
 
     $database = connectToDB();
 
-    // load UNFINISHED tasks for THIS student
+    // load UNFINISHED (no submission) tasks for THIS student
     /*
-        task id = student task id
-        student_task.student_id = student_id
-        submission = null 
-        (submission.student_id = student_id
-        AND submission.task_id = task_id)
+        task.id = student_task.id
+        student_task.student_id = "student_id
+        submission = null (doesn't exist)
+        (submission.student_id = :student_id
+        AND submission.task_id = :task_id)
     */
     $sql = "SELECT task.*, student_task.*
             FROM task
@@ -40,31 +40,32 @@
 </div>
 
 <!-- task list -->
-    <div class="container" style="max-width:600px;">
-            <?php if (count($tasks)): ?>
-                <?php foreach ($tasks as $task) : ?>
-                    <div class="card mb-4 shadow-sm border-0">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <h5 class="card-title mb-1"><?= $task["title"] ?></h5>
-                                    <p class="card-text"><?= $task["description"] ?></p>
-                                    <p class="card-text"><small class="text-muted">Posted on <?= date('F j, Y, g:i a', strtotime($task["created_at"])) ?></small></p>
-                                </div>
-                                <div class="d-flex">
-                                    <a href="/classroom_task?task_id=<?= $task["task_id"] ?>&class_id=<?= $task["class_id"] ?>" class="btn btn-outline-primary">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                </div>
-                            </div>
+<div class="container" style="max-width:600px;">
+    <!-- there are unfinished tasks -->
+    <?php if (count($tasks)): ?>
+        <?php foreach ($tasks as $task) : ?>
+            <div class="card mb-4 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title mb-1"><?= $task["title"] ?></h5>
+                            <p class="card-text"><?= $task["description"] ?></p>
+                            <p class="card-text"><small class="text-muted">Posted on <?= date('F j, Y, g:i a', strtotime($task["created_at"])) ?></small></p>
+                        </div>
+                        <div class="d-flex">
+                            <a href="/classroom_task?task_id=<?= $task["task_id"] ?>&class_id=<?= $task["class_id"] ?>" class="btn btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <!-- no tasks yet -->
-            <?php else: ?>
-                <div class="alert alert-info text-center mt-4">
-                    No work to do...
                 </div>
-            <?php endif; ?>
-    </div>
+            </div>
+        <?php endforeach; ?>
+        <!-- no unfinished tasks -->
+        <?php else: ?>
+            <div class="alert alert-info text-center mt-4">
+                No work to do...
+            </div>
+        <?php endif; ?>
+</div>
 <?php require "parts/footer.php" ?>

@@ -4,7 +4,7 @@
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    // 4. check for error
+    // check for error
     if (empty($email) || empty($password)){
         $_SESSION["error"] = "All fields are required";
         //redirect back to login
@@ -13,11 +13,11 @@
     }else{
         $user = getUserByEmail($email);
 
-        // check if the user exists
+        // check if user exists
         if ($user){
-            // 6. check if the password is correct or not
+            // check if the password is correct or not
             if (password_verify($password, $user["password"])){
-                // 7. store the user data in the session storage to login the user
+                // store the user data in the session storage to login the user
                 $_SESSION["user"] = $user;
 
                 header("Location: /");

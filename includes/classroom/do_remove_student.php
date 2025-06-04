@@ -4,10 +4,6 @@
     $student_id = $_POST["student_id"];
     $class_id = $_POST["class_id"];
 
-    var_dump($student_id);
-    
-    
-
     // delete join request so student can request again
     $sql = "DELETE FROM join_request WHERE student_id = :student_id";
     $query = $database->prepare( $sql );
@@ -15,8 +11,7 @@
         "student_id" => $student_id
     ]);
     
-    
-    // get all class tasks
+    // get class tasks
     $sql = "SELECT * FROM task where class_id = :class_id";
     $query = $database->prepare( $sql );
     $query->execute([
@@ -42,7 +37,7 @@
         "user_id" => $student_id
         ]);
     }
-    
+
     // delete student submission
     $sql = "DELETE FROM submission WHERE student_id = :student_id AND task_id = :task_id";
     $query = $database->prepare( $sql );
@@ -61,7 +56,7 @@
         "class_id" => $class_id
     ]);
     
-
+    // redirect to classroom
     header("location: /classroom?id=" . $class_id);
     exit;
 ?>

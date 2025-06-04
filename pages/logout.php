@@ -6,6 +6,6 @@
     // remove user session
     unset($_SESSION["user"]);
 
-    // redirect back to index.php
+    // redirect back to home
     header("Location: /");
 ?>
