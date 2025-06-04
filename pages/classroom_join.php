@@ -1,3 +1,9 @@
+<?php
+  if (!isStudent()){
+    header("Location: /");
+    exit;
+  }
+?>
 <?php require "parts/header.php"; ?>
     <div class="container my-5 mx-auto" style="max-width: 500px;">
       <h1 class="h1 mb-4 text-center">Join a Classroom</h1>

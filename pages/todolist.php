@@ -1,8 +1,12 @@
 <?php 
-    
     $user_id = $_SESSION["user"]["id"];
 
     $database = connectToDB();
+
+    if (!isStudent()){
+        header("Location: /");
+        exit;
+    }
 
     // load UNFINISHED (no submission) tasks for THIS student
     /*

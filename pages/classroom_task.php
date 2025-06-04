@@ -5,6 +5,14 @@
     $class_id = $_GET["class_id"];
     $user_id = $_SESSION["user"]["id"];
 
+    // get user data
+    $sql = "SELECT * FROM user WHERE id = :user_id";
+    $query = $database->prepare($sql);
+    $query -> execute([
+      "user_id" => $user_id
+    ]);
+    $user = $query->fetch();
+    
     // load task data by id
     $sql = "SELECT * FROM task where id = :id";
     $query = $database->prepare($sql);
@@ -20,6 +28,30 @@
       "class_id" => $class_id
     ]);
     $class = $query->fetch();
+
+    $teacher_id = $class["teacher_id"];
+
+    // only related users can access this classroom (admin dont need to be checked)
+    if ($user["role"]=== "student") {
+        // check if the student is in this classroom
+        $sql = "SELECT * FROM student_in_class where student_id = :student_id AND class_id = :class_id";
+        $query = $database->prepare($sql);
+        $query -> execute([
+        "student_id" => $user_id,
+        "class_id" => $class_id
+        ]);
+        $isInClass = $query->fetchAll();
+        if (!count($isInClass)){
+            header("Location: /");
+            exit;
+        }
+    } elseif($user["role"] === "teacher") {
+        // check if the user is the teacher of the classroom
+        if (!($user["id"] === $teacher_id)) {
+            header("Location: /");
+            exit;
+        }
+    }
 
 
 

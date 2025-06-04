@@ -1,13 +1,12 @@
 <?php
+  if (!isAdmin()){
+      header("Location: /");
+      exit;
+  }
   $search_keyword = isset($_GET["search"]) ? $_GET["search"] : "";
 
   
     $database = connectToDB();
-
-    if (!isAdmin()){
-      header("Location: /dashboard");
-      exit;
-    }
 
     // load searched/all users
     $sql = "SELECT * 

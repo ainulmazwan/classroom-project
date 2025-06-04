@@ -1,6 +1,6 @@
 <?php
     if (!isAdmin()){
-      header("Location: /dashboard");
+      header("Location: /");
       exit;
     }
     $database = connectToDB();

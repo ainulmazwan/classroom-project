@@ -1,4 +1,8 @@
 <?php
+    if (!isAdmin()){
+      header("Location: /");
+      exit;
+  }
   $search_keyword = isset($_GET["search"]) ? $_GET["search"] : "";
 
 
